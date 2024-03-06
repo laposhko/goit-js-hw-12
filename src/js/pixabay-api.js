@@ -27,7 +27,7 @@ export async function requestImages(query, amount, page) {
       backgroundColor: '#EF4040',
       theme: 'dark',
       position: 'topRight',
-      maxWidth: '400px',
+      maxWidth: '450px',
     });
     fetchBtn.style.display = 'none';
     return data.hits;
