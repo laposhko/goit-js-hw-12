@@ -8,7 +8,8 @@ const fetchBtn = document.querySelector('.fetch-btn');
 
 let link;
 export async function requestImages(query, amount, page) {
-  link = `${BASE_URL}?key=${AUTH_KEY}&q=${query}&page=${page}&per_page=${amount}`;
+  fetchBtn.style.display = 'none';
+  link = `${BASE_URL}?key=${AUTH_KEY}&q=${query}&orientation=horizontal&image_type=photo&safesearch=true&page=${page}&per_page=${amount}`;
   const data = await axios.get(link).then(response => response.data);
   if (data.total == 0) {
     iziToast.error({
@@ -20,6 +21,7 @@ export async function requestImages(query, amount, page) {
       position: 'topRight',
       maxWidth: '400px',
     });
+    return;
   } else if (page * amount >= data.totalHits) {
     iziToast.error({
       title: 'Error',
@@ -29,7 +31,6 @@ export async function requestImages(query, amount, page) {
       position: 'topRight',
       maxWidth: '450px',
     });
-    fetchBtn.style.display = 'none';
     return data.hits;
   } else {
     fetchBtn.style.display = 'block';

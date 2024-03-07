@@ -13,6 +13,7 @@ let query;
 let amount = 15;
 let page = 1;
 let lightbox;
+
 form.addEventListener('submit', async event => {
   page = 1;
   imagesList.innerHTML = '';
@@ -42,17 +43,19 @@ fetchBtn.addEventListener('click', async event => {
   try {
     const images = await requestImages(query, amount, page);
     renderImages(images);
+    page++;
+    const rect = document
+      .querySelector('.gallery-item')
+      .getBoundingClientRect();
+
+    window.scrollBy({
+      top: rect.height * 2,
+      behavior: 'smooth',
+    });
+
+    lightbox.refresh();
   } catch (error) {
     console.log(error);
   }
-  const rect = document.querySelector('.gallery-item').getBoundingClientRect();
-
-  window.scrollBy({
-    top: rect.height * 2,
-    behavior: 'smooth',
-  });
-
-  page++;
   loader.remove();
-  lightbox.refresh();
 });
