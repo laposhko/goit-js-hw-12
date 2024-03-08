@@ -14,14 +14,20 @@ let amount = 15;
 let page = 1;
 let lightbox;
 
+function showLoader() {
+  content.insertAdjacentHTML('beforeend', '<span class="loader"></span>');
+}
+
+function hideLoader() {
+  const loader = document.querySelector('.loader');
+  loader.remove();
+}
 form.addEventListener('submit', async event => {
+  showLoader();
   page = 1;
   imagesList.innerHTML = '';
   event.preventDefault();
   query = input.value;
-  content.insertAdjacentHTML('beforeend', '<span class="loader"></span>');
-  const loader = document.querySelector('.loader');
-
   try {
     const images = await requestImages(query, amount, page);
     renderImages(images);
@@ -29,8 +35,7 @@ form.addEventListener('submit', async event => {
     console.log(error);
   }
   page++;
-  loader.remove();
-
+  hideLoader();
   input.value = '';
   lightbox = new SimpleLightbox('.images-list a', {
     overlayOpacity: 0.8,
@@ -38,8 +43,7 @@ form.addEventListener('submit', async event => {
 });
 
 fetchBtn.addEventListener('click', async event => {
-  content.insertAdjacentHTML('beforeend', '<span class="loader"></span>');
-  const loader = document.querySelector('.loader');
+  showLoader();
   try {
     const images = await requestImages(query, amount, page);
     renderImages(images);
@@ -52,10 +56,9 @@ fetchBtn.addEventListener('click', async event => {
       top: rect.height * 2,
       behavior: 'smooth',
     });
-
     lightbox.refresh();
   } catch (error) {
     console.log(error);
   }
-  loader.remove();
+  hideLoader();
 });
