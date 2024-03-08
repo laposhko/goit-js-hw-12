@@ -33,13 +33,14 @@ form.addEventListener('submit', async event => {
     renderImages(images);
   } catch (error) {
     console.log(error);
+  } finally {
+    page++;
+    hideLoader();
+    form.reset();
+    lightbox = new SimpleLightbox('.images-list a', {
+      overlayOpacity: 0.8,
+    });
   }
-  page++;
-  hideLoader();
-  input.value = '';
-  lightbox = new SimpleLightbox('.images-list a', {
-    overlayOpacity: 0.8,
-  });
 });
 
 fetchBtn.addEventListener('click', async event => {
@@ -59,6 +60,7 @@ fetchBtn.addEventListener('click', async event => {
     lightbox.refresh();
   } catch (error) {
     console.log(error);
+  } finally {
+    hideLoader();
   }
-  hideLoader();
 });
